@@ -2,16 +2,18 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import FloatingPlusButton from './components/FloatingPlusButton'
-import BookShelf from './components/BookShelf'
+// import BookShelf from './components/BookShelf'
+import BookGrid from './components/BookGrid'
 import BookShelfHeader from './components/BookShelfHeader'
 import BookSearchPage from './components/BookSearchPage'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
-export default class App extends Component {
+export default class HOME extends Component {
 
   state = {
   query: '',
+  myBooks: '',
   sortedBooks: [],
   currentlyReadingBooks: [],
   wantToReadBooks: [],
@@ -19,17 +21,25 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-     this.sortBooks()
+    BooksAPI.getAll().then((books) => {
+      this.setState({myBooks: books})
+    })
   }
 
   onShelfSelect(bookId, shelf){
     BooksAPI.update(bookId, shelf).then((results) => {
       this.sortBooks()
-      window.location.reload()
     })
   }
 
   render() {
+    const renderShelves = this.state.sortedBooks.map((books, i) => {
+      return (
+          <div className="bookshelf" key={i}>
+            <BookGrid title={i} books={books} updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} />
+          </div>
+        )
+      })
     return (
       <div className="app">
           <Route exact path="/" render={() => (
@@ -39,15 +49,7 @@ export default class App extends Component {
                </div>
 
                <div className="list-books-content">
-                 {
-                   this.state.sortedBooks.map((books, i) => {
-                     return (
-                         <div className="bookshelf" key={i}>
-                           <BookShelf title={i} books={books} updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} sortBooks={() => this.sortBooks()}/>
-                         </div>
-                       )
-                     })
-                 }
+                 { renderShelves }
                </div>
 
                <FloatingPlusButton  />
@@ -55,9 +57,8 @@ export default class App extends Component {
            )} />
 
            <Route path='/search/:query' render={ (routeInfo) => (
-             <BookSearchPage query={ routeInfo.match.params.query }
-              updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} />
-          )} /> {/* To extract search keyword e.g. 'react' in the URL '.../search/react' in the BookSearchPage component use 'this.props.query'. */}
+             <BookSearchPage query={ routeInfo.match.params.query } updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} />
+            )} />
       </div>
     )
   }

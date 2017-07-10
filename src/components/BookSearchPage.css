@@ -1,0 +1,48 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+.tags body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+}
+.tags div {
+	width: 480px;
+	margin: 5em auto 2.5em;
+}
+.tags div:first-child {
+	margin-top: 3em;
+}
+
+
+
+.tags ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.tags ul li {
+	display: inline-block;
+	margin: 0 .3em .3em 0;
+	padding: 0;
+}
+.tags ul li a {
+	display: inline-block;
+	max-width: 100px;
+	height: 28px;
+	line-height: 28px;
+	padding: 0 1em;
+	background-color: #fff;
+	border: 1px solid #aaa;
+	border-radius: 3px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color: #333;
+	font-size: 13px;
+	text-decoration: none;
+	-webkit-transition: .2s;
+	transition: .2s;
+}
+.tags ul li a:hover {
+	background-color: #3498db;
+	border: 1px solid #3498db;
+	color: #fff;
+}

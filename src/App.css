@@ -36,19 +36,25 @@ body, .app {
   }
 }
 
-.bookshelf-title {
+.bookshelf-title-container {
+  height: 65px;
   border-bottom: 1px solid #dedede;
 }
+
+.bookshelf-title-text {
+  display: inline-block;
+}
+
 .bookshelf-books {
   text-align: center;
 }
 
-.open-search {
+.floating-plus-button {
   position: fixed;
   right: 25px;
   bottom: 25px;
 }
-.open-search a {
+.floating-plus-button a {
   display: block;
   width: 50px;
   height: 50px;
@@ -61,6 +67,7 @@ body, .app {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   font-size: 0;
 }
+
 
 /* search page */
 

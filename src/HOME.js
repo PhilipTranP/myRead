@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import FloatingPlusButton from './components/FloatingPlusButton'
-import BookShelf from './components/BookShelf'
+// import BookShelf from './components/BookShelf'
+import BookGrid from './components/BookGrid'
 import BookShelfHeader from './components/BookShelfHeader'
 import BookSearchPage from './components/BookSearchPage'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
-export default class App extends Component {
+export default class HOME extends Component {
 
   state = {
   query: '',
@@ -43,7 +44,7 @@ export default class App extends Component {
                    this.state.sortedBooks.map((books, i) => {
                      return (
                          <div className="bookshelf" key={i}>
-                           <BookShelf title={i} books={books} updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} sortBooks={() => this.sortBooks()}/>
+                           <BookGrid title={i} books={books} updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} sortBooks={() => this.sortBooks()}/>
                          </div>
                        )
                      })
