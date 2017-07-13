@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-
 import '../App.css'
 
 export default class FloatingPlusButton extends Component {
@@ -12,3 +11,4 @@ export default class FloatingPlusButton extends Component {
     )
   }
 }
+// Might be too componentized by breaking this floating button into a separate component but it helps to reduce the JSX in the top level component

@@ -9,7 +9,7 @@ export default class SearchBar extends Component {
       }
   }
   componentDidMount(){
-    this.nameInput.focus();
+    this.nameInput.focus() // to focus on the search bar. TODO: show placeholder when not in focus mode.
   }
   onInputChange(query){
     this.setState({query})

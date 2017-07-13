@@ -1,8 +1,18 @@
 import React, { Component } from 'react'
-import VisibilitySensor from 'react-visibility-sensor'
-import ExpandSearchInput from './ExpandSearchInput'
+import './ShelfHeaderSearch.css'
+
 
 export default class BookShelfHeader extends Component {
+  constructor(props){
+    super(props)
+      this.state={
+        query: ''
+      }
+  }
+  onInputChange(query){
+    this.setState({query})
+    this.props.filterBookInShelf(query, this.props.title)
+  }
   render() {
     const screen = window.innerWidth
 
@@ -17,11 +27,16 @@ export default class BookShelfHeader extends Component {
     }
     return(
       <div className="bookshelf-title-container">
-         <VisibilitySensor offset={{top: 250}}>
-            {({isVisible}) =>
-              <h2 className="bookshelf-title-text">{displayCorrectTitle(this.props.title)} {!isVisible ? <div style={{display: "inline-block", marginLeft: "10px"}}><ExpandSearchInput filterBookInShelf={this.props.filterBookInShelf} shelf={this.props.title}/></div> : null}</h2>
-            }
-          </VisibilitySensor>
+        <h2 className="bookshelf-title-text">{displayCorrectTitle(this.props.title)}
+          <span className="expand-search-input-wrapper"  style={{display: "inline-block", marginLeft: "10px"}}>
+              <input
+                type="search"
+                placeholder="search"
+                value={this.state.query}
+                onChange={(event) => this.onInputChange(event.target.value)}
+              />
+           </span>
+         </h2>
       </div>
     )
   }

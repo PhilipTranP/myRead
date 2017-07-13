@@ -6,7 +6,7 @@ export default class Book extends Component {
   }
   onSelect(id, option){
     this.props.updateBooksInShelf(id, option)
-    this.setState({option: "none"})
+    this.setState({option: "none"}) //this resets the select options
   }
   render(){
     const { book } = this.props

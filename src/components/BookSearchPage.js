@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import * as BooksAPI from '../BooksAPI'
 import SearchBar from './SearchBar'
 import { Link } from 'react-router-dom'
-import Sach from './Sach'
+import Book from './Book'
 import './BookSearchPage.css'
 
 export default class BookSearchPage extends Component {
@@ -36,7 +36,7 @@ export default class BookSearchPage extends Component {
     if(this.state.searchResults.length > 0 ){
       return(
         this.state.searchResults.map((book, i) => {
-             return(<Sach key={book.id + i}    updateBooksInShelf={this.props.updateBooksInShelf}
+             return(<Book key={book.id + i}    updateBooksInShelf={this.props.updateBooksInShelf}
              book={book} />
            )
          })
@@ -44,7 +44,16 @@ export default class BookSearchPage extends Component {
     } else {
       return(
         <div style={{margin: "50px"}}>
-            <h2>Suggest Keywords</h2>
+          {/* Notes: Some keywords suggested by Udacity provides no search results.*/}
+
+            { this.props.query == "suggest-keywords"
+              ?
+                null
+
+              :
+                <div>Hmm...no books found for keyword <strong>{`"${this.props.query}"`} </strong>!!</div>
+             }
+            <h2>Suggested Keywords by Udacity</h2>
             <div className="tags">
               <ul>
                 {allowWords.map((word, i)=>{
@@ -59,7 +68,6 @@ export default class BookSearchPage extends Component {
     }
   }
   render() {
-      console.log(allowWords)
       return(
         <div className="search-books">
           <SearchBar
@@ -68,6 +76,15 @@ export default class BookSearchPage extends Component {
         <div>
         </div>
          <div style={{marginTop: "80px"}}>
+
+           { this.props.query == "suggest-keywords" || this.state.searchResults.length < 1
+             ?
+               null
+
+             :
+               <h3 style={{margin: "50px"}}>{this.state.searchResults.length} books found for keyword <strong>{`"${this.state.query}"`} </strong><a href="http://localhost:3000/search/suggest-keywords"> suggest-keywords</a></h3>
+            }
+
            <ol className="books-grid">
              {this.renderSearchResults()}
            </ol>

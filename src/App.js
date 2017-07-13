@@ -9,23 +9,19 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 export default class App extends Component {
-
-  state = {
-  query: '',
-  sortedBooks: [],
-  currentlyReadingBooks: [],
-  wantToReadBooks: [],
-  readBooks: [],
+  constructor(props) {
+    super(props)
+    this.state = {
+    sortedBooks: []
+    }
   }
-
   componentDidMount() {
      this.sortBooks()
   }
 
   onShelfSelect(bookId, shelf){
     BooksAPI.update(bookId, shelf).then((results) => {
-      this.sortBooks()
-      window.location.reload()
+      this.sortBooks() //to call getAll() API again to rerender the shelves
     })
   }
 
@@ -35,7 +31,7 @@ export default class App extends Component {
           <Route exact path="/" render={() => (
              <div className="list-books">
                <div className="list-books-title">
-                 <h1>MyReads</h1>
+                 <h1>Philip Tran's MyReads</h1>
                </div>
 
                <div className="list-books-content">
@@ -57,24 +53,25 @@ export default class App extends Component {
            <Route path='/search/:query' render={ (routeInfo) => (
              <BookSearchPage query={ routeInfo.match.params.query }
               updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} />
-          )} /> {/* To extract search keyword e.g. 'react' in the URL '.../search/react' in the BookSearchPage component use 'this.props.query'. */}
+          )} /> {/* To extract search keyword e.g. 'react' in the URL '.../search/react' in the BookSearchPage component use 'this.props.query'. Shout out to an UDACITY's @Jamesmanone in hacking this feature after studying the react-router's `match` */}
       </div>
     )
   }
-  sortBooks(){
+  sortBooks(){ //TODO check with fellow devs to see if it can be simplified/DRYer!
     BooksAPI.getAll().then((books) => {
+      this.setState({books})
       const filterBooks = (option) => {
         return books.filter((book) => option.test(book.shelf))
       }
-      const sortedBooks =[]
-      const read = new RegExp(escapeRegExp('read'), '')
+      const sortedBooks =[] //result an array with three sub arrays for rendering three shelves using map.
+      const read = new RegExp(escapeRegExp('read'), '') // 'i' would match 'read' wantToRead, currentlyReading.
       const readBooks = filterBooks(read)
       const wantToRead = new RegExp(escapeRegExp('wantToRead'), '')
       const wantToReadBooks = filterBooks(wantToRead)
       const currentlyReading = new RegExp(escapeRegExp('currentlyReading'), '')
       const currentlyReadingBooks = filterBooks(currentlyReading)
       sortedBooks.push(filterBooks(currentlyReading), filterBooks(wantToRead), filterBooks(read))
-      this.setState({readBooks, currentlyReadingBooks, wantToReadBooks, sortedBooks})
+      this.setState({sortedBooks})
     })
   }
 }
