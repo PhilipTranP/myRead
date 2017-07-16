@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import * as BooksAPI from '../BooksAPI'
 import SearchBar from './SearchBar'
-import { Link } from 'react-router-dom'
 import Book from './Book'
 import './BookSearchPage.css'
 
@@ -33,6 +32,7 @@ export default class BookSearchPage extends Component {
   }
 
   renderSearchResults(){
+    const allowWords = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'History', 'History', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Program Javascript', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
     if(this.state.searchResults.length > 0 ){
       return(
         this.state.searchResults.map((book, i) => {
@@ -46,7 +46,7 @@ export default class BookSearchPage extends Component {
         <div style={{margin: "50px"}}>
           {/* Notes: Some keywords suggested by Udacity provides no search results.*/}
 
-            { this.props.query == "suggest-keywords"
+            { this.props.query === "suggest-keywords"
               ?
                 null
 
@@ -77,7 +77,7 @@ export default class BookSearchPage extends Component {
         </div>
          <div style={{marginTop: "80px"}}>
 
-           { this.props.query == "suggest-keywords" || this.state.searchResults.length < 1
+           { this.props.query === "suggest-keywords" || this.state.searchResults.length < 1
              ?
                null
 
@@ -92,7 +92,4 @@ export default class BookSearchPage extends Component {
        </div>
       )
     }
-
 }
-
-const allowWords = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'History', 'History', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Program Javascript', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']

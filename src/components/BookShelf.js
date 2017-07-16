@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import Book from './Book'
-import * as BooksAPI from '../BooksAPI'
 import BookShelfHeader from './BookShelfHeader'
 import sortBy from 'sort-by'
 
@@ -26,7 +25,7 @@ export default class BookShelf extends Component {
     const { books } = this.props
     const { query } = this.state
 
-    let showingBooks, showNotifs
+    let showingBooks
     if (query) {
        const match = new RegExp(escapeRegExp(query), 'i')
        showingBooks = books.filter((book) => match.test(book.title))

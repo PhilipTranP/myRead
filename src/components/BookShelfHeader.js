@@ -15,7 +15,7 @@ export default class BookShelfHeader extends Component {
   }
   render() {
     const screen = window.innerWidth
-
+    {/*Make the title shorter on mobile so that there is room for the search input*/}
     const displayCorrectTitle = (index) => {
       if (index === 0){
         return (screen > 460 ? "Currrently Reading" : "Reading")

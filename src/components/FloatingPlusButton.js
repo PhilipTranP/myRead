@@ -11,4 +11,4 @@ export default class FloatingPlusButton extends Component {
     )
   }
 }
-// Might be too componentized by breaking this floating button into a separate component but it helps to reduce the JSX in the top level component
+// Might be too componentized by breaking this floating button into a separate component but it helps to reduce the JSX in the top level component and also it could be reuse for other page when doing the personal project Sunnotes.

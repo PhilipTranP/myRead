@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import FloatingPlusButton from './components/FloatingPlusButton'
 import BookShelf from './components/BookShelf'
-import BookShelfHeader from './components/BookShelfHeader'
 import BookSearchPage from './components/BookSearchPage'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
@@ -65,11 +64,8 @@ export default class App extends Component {
       }
       const sortedBooks =[] //result an array with three sub arrays for rendering three shelves using map.
       const read = new RegExp(escapeRegExp('read'), '') // 'i' would match 'read' wantToRead, currentlyReading.
-      const readBooks = filterBooks(read)
       const wantToRead = new RegExp(escapeRegExp('wantToRead'), '')
-      const wantToReadBooks = filterBooks(wantToRead)
       const currentlyReading = new RegExp(escapeRegExp('currentlyReading'), '')
-      const currentlyReadingBooks = filterBooks(currentlyReading)
       sortedBooks.push(filterBooks(currentlyReading), filterBooks(wantToRead), filterBooks(read))
       this.setState({sortedBooks})
     })
