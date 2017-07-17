@@ -11,7 +11,8 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    sortedBooks: []
+      books: [],
+      sortedBooks: []
     }
   }
   componentDidMount() {
@@ -50,8 +51,7 @@ export default class App extends Component {
            )} />
 
            <Route path='/search/:query' render={ (routeInfo) => (
-             <BookSearchPage query={ routeInfo.match.params.query }
-              updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} />
+             <BookSearchPage query={ routeInfo.match.params.query }  books={this.state.books} updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} />
           )} /> {/* To extract search keyword e.g. 'react' in the URL '.../search/react' in the BookSearchPage component use 'this.props.query'. Shout out to an UDACITY's @Jamesmanone in hacking this feature after studying the react-router's `match` */}
       </div>
     )

@@ -11,23 +11,46 @@ export default class BookSearchPage extends Component {
       option: '',
       query: '',
       books: [],
+      error:'',
       updatedBooks: [],
       searchResults: []
     }
+  }
+  componentWillReceiveProps(){
+    this.setState({option: "none", query: this.props.query})
     this.searchBook(this.props.query)
   }
-  componentDidMount(){
-    this.setState({option: "none"})
-    if(this.props.query.length >1){
-      this.searchBook(this.props.query)
-    }
-  }
 
-  searchBook(query){
+  searchBook(query) {
     var term = query.trim()
-    BooksAPI.search(term).then((results)=>{
-      this.setState({query: term,
-                     searchResults: results})
+    this.setState({query: term})
+    if(!term) {
+      this.setState({searchResults: []})
+      return
+    }
+    term && BooksAPI.search(this.state.query)
+    .then(result => {
+      // If BooksApi returns anything other than array throw error and skip state updates
+      if(!Array.isArray(result)) {
+        throw new Error('Bad response')
+      }
+      return result
+    })
+    .then(result =>
+      result.map(newBook => {
+        if(this.props.books.filter(book => book.id === newBook.id).length) {
+          var filteredBook = this.props.books.filter(book => book.id === newBook.id)// Pull out the book already in one of the shelves. Result is an one item array.
+          newBook.shelf = filteredBook[0].shelf; // Assign shelf property to the newBook which is currently 'none' or a hard-coded shelf property.
+        } else if(newBook.shelf !== 'none') {  // If the shelf property is hard-coded by the Audacity folks, reset it to 'none' ;-)
+          newBook.shelf = 'none'
+        }
+        return newBook
+      }))
+    .then(result => {
+      this.setState({searchResults: result})  // Add books to searchResults book array
+    })
+    .catch(e => {
+      this.setState({error: 'Failed to load resources'})
     })
   }
 
@@ -37,7 +60,7 @@ export default class BookSearchPage extends Component {
       return(
         this.state.searchResults.map((book, i) => {
              return(<Book key={book.id + i}    updateBooksInShelf={this.props.updateBooksInShelf}
-             book={book} />
+             book={book} query={this.props.query}/>
            )
          })
       )
@@ -46,14 +69,14 @@ export default class BookSearchPage extends Component {
         <div style={{margin: "50px"}}>
           {/* Notes: Some keywords suggested by Udacity provides no search results.*/}
 
-            { this.props.query === "suggest-keywords"
+            { this.props.query === "suggest-keywords" || this.state.query === ''
               ?
                 null
 
               :
-                <div>Hmm...no books found for keyword <strong>{`"${this.props.query}"`} </strong>!!</div>
+                <div>Hmm... seems like the Audacity folks rented out these books!</div>
              }
-            <h2>Suggested Keywords by Udacity</h2>
+            <h2>Suggest Keywords</h2>
             <div className="tags">
               <ul>
                 {allowWords.map((word, i)=>{
@@ -82,7 +105,7 @@ export default class BookSearchPage extends Component {
                null
 
              :
-               <h3 style={{margin: "50px"}}>{this.state.searchResults.length} books found for keyword <strong>{`"${this.state.query}"`} </strong><a href="http://localhost:3000/search/suggest-keywords"> suggest-keywords</a></h3>
+               <h3 style={{marginLeft: "30px"}}><a href="http://localhost:3000/search/suggest-keywords"> Suggest Keywords</a></h3>
             }
 
            <ol className="books-grid">
