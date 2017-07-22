@@ -9,6 +9,7 @@ export default class Book extends Component {
     this.setState({option: "none"}) //this resets the select options
   }
   render(){
+    if(this.props.book) {
     const { book } = this.props
     return(
         <li key={book.id}>
@@ -31,9 +32,19 @@ export default class Book extends Component {
              </div>
            </div>
            <div className="book-title">{book.title}</div>
-           <div className="book-authors">{book.authors.join(', ')}</div>
+           <div className="book-authors">
+             { book.authors && book.authors.length
+                ?
+                   book.authors.map((author, index) => {
+                     return (
+                       <span key={ index }>{ author }<br /></span>
+                     )
+                   })
+                 : null
+              }
+           </div>
          </div>
        </li>
-     )
+     )}
     }
   }

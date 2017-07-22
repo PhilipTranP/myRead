@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as BooksAPI from '../BooksAPI'
-import SearchBar from './SearchBar'
+import createHistory from 'history/createBrowserHistory'
+import { Link } from 'react-router-dom'
 import Book from './Book'
 import './BookSearchPage.css'
 
@@ -16,11 +17,25 @@ export default class BookSearchPage extends Component {
       searchResults: []
     }
   }
-  componentWillReceiveProps(){
-    this.setState({option: "none", query: this.props.query})
+  componentDidMount(){
+    this.nameInput.focus() // TODO: show placeholder when not in focus mode.
+    this.setState({books: this.props.books, query: this.props.query})
     this.searchBook(this.props.query)
   }
-
+  componentWillReceiveProps(){
+    this.setState({option: "none", query: this.state.query})
+    this.searchBook(this.state.query)
+  }
+  onInputChange(query){
+    this.setState({query})
+  }
+  handleSubmit(event, query) {
+    const history = createHistory()
+    history.push({
+    pathname: `/search/${this.state.query}`,
+    })
+    window.location.reload()
+  }
   searchBook(query) {
     var term = query.trim()
     this.setState({query: term})
@@ -28,7 +43,7 @@ export default class BookSearchPage extends Component {
       this.setState({searchResults: []})
       return
     }
-    term && BooksAPI.search(this.state.query)
+    this.props.query && BooksAPI.search(this.state.query)
     .then(result => {
       // If BooksApi returns anything other than array throw error and skip state updates
       if(!Array.isArray(result)) {
@@ -55,7 +70,6 @@ export default class BookSearchPage extends Component {
   }
 
   renderSearchResults(){
-    const allowWords = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'History', 'History', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Program Javascript', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
     if(this.state.searchResults.length > 0 ){
       return(
         this.state.searchResults.map((book, i) => {
@@ -65,49 +79,35 @@ export default class BookSearchPage extends Component {
          })
       )
     } else {
-      return(
-        <div style={{margin: "50px"}}>
-          {/* Notes: Some keywords suggested by Udacity provides no search results.*/}
-
-            { this.props.query === "suggest-keywords" || this.state.query === ''
-              ?
-                null
-
-              :
-                <div>Hmm... seems like the Audacity folks rented out these books!</div>
-             }
-            <h2>Suggest Keywords</h2>
-            <div className="tags">
-              <ul>
-                {allowWords.map((word, i)=>{
-                 return (
-                    <li key={i}><a href={`http://localhost:3000/search/${word}`}>{word}</a></li>
-                 )
-                })}
-              </ul>
-            </div>
-         </div>
-     )
+      return (
+        <div style={{margin: "100px"}}>
+          <h1 style={{fontWeight: "300"}}> No books found for <span>  "{this.props.query}" --- <a href="http://localhost:3000/search"> Suggest Keywords</a></span></h1>
+        </div>
+      )
     }
   }
   render() {
       return(
         <div className="search-books">
-          <SearchBar
-            onSearchQueryChange={(query) => this.searchBook(query)}
-          />
+          <div className="search-books-bar">
+            <div style={{margin: "14px"}}><Link to="/" className="to-home" >Home</Link></div>
+             <div className="close-search" onClick={()=> createHistory().go(-1)}>Close</div>
+              <div className="search-books-input-wrapper">
+                <form onSubmit={(event, query) => this.handleSubmit(event, event.target.value)}>
+                  <input
+                    ref={(input) => { this.nameInput = input; }}
+                    className="search-books"
+                    type="text"
+                    placeholder="Search by title or author"
+                    value={this.state.query}
+                    onChange={(event) => this.onInputChange(event.target.value)}
+                  />
+                </form>
+              </div>
+            </div>
         <div>
         </div>
          <div style={{marginTop: "80px"}}>
-
-           { this.props.query === "suggest-keywords" || this.state.searchResults.length < 1
-             ?
-               null
-
-             :
-               <h3 style={{marginLeft: "30px"}}><a href="http://localhost:3000/search/suggest-keywords"> Suggest Keywords</a></h3>
-            }
-
            <ol className="books-grid">
              {this.renderSearchResults()}
            </ol>

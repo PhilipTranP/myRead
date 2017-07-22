@@ -6,7 +6,7 @@ export default class FloatingPlusButton extends Component {
   render(){
     return(
       <div className="floating-plus-button">
-        <Link to="/search/suggest-keywords" onClick={this.props.onClick}>Add a book</Link>
+        <Link to="/search" onClick={this.props.onClick}>Add a book</Link>
       </div>
     )
   }

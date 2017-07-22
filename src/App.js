@@ -4,6 +4,7 @@ import escapeRegExp from 'escape-string-regexp'
 import FloatingPlusButton from './components/FloatingPlusButton'
 import BookShelf from './components/BookShelf'
 import BookSearchPage from './components/BookSearchPage'
+import SuggestKeywords from './components/SuggestKeywords'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
@@ -49,6 +50,8 @@ export default class App extends Component {
                <FloatingPlusButton  />
              </div>
            )} />
+
+         <Route exact path='/search' component={SuggestKeywords} />
 
            <Route path='/search/:query' render={ (routeInfo) => (
              <BookSearchPage query={ routeInfo.match.params.query }  books={this.state.books} updateBooksInShelf={(bookId, shelf)=>this.onShelfSelect(bookId, shelf)} />
