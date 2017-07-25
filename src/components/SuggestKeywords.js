@@ -62,6 +62,8 @@ export default class SuggestKeywords extends Component {
         </div>
         <div style={{margin: '70px'}}>
           <h2>Suggest Keywords</h2>
+          <p>Type a keyword then press ENTER to search or click on a keyword below to find your book!</p>
+          <hr />
           <div className="tags">
             <ul>
               {this.state.allowWords.map((word, i)=>{

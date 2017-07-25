@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as BooksAPI from '../BooksAPI'
+// import escapeRegExp from 'escape-string-regexp'
 import createHistory from 'history/createBrowserHistory'
 import { Link } from 'react-router-dom'
 import Book from './Book'
@@ -14,7 +15,8 @@ export default class BookSearchPage extends Component {
       books: [],
       error:'',
       updatedBooks: [],
-      searchResults: []
+      searchResults: [],
+      filteredBooks: []
     }
   }
   componentDidMount(){
@@ -28,6 +30,14 @@ export default class BookSearchPage extends Component {
   }
   onInputChange(query){
     this.setState({query})
+    // const match = new RegExp(escapeRegExp(query), 'i')
+    // const filteredBooks = this.state.searchResults.filter((book) => match.test(book.title))
+    // this.setState({filteredBooks: filteredBooks})
+    // console.log(this.state.filteredBooks)
+    // if(!query){
+    //   this.setState({filteredBooks: this.state.searchResults})
+    //   return
+    // }
   }
   handleSubmit(event, query) {
     const history = createHistory()
